@@ -3,9 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { typeOrmConfig } from './typeorm.config';
+import { PermissionModule } from './permission/permission.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeOrmConfig)],
+  imports: [TypeOrmModule.forRoot(typeOrmConfig), PermissionModule],
   controllers: [AppController],
   providers: [AppService],
 })
