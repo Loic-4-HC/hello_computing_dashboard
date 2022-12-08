@@ -5,11 +5,10 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   Inject,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePermissionDto } from '../dto/create-permission.dto';
 import { UpdatePermissionDto } from '../dto/update-permission.dto';
 import { PermissionEntity } from '../entities/permission.entity';
@@ -39,9 +38,8 @@ export class PermissionController {
     status: 400,
     description: 'Invalid Input.',
   })
-  // @UseGuards(PermissionGuard(ManagePermissions.CreatePermission))
   async createPermission(@Body() createPermissionDto: CreatePermissionDto) {
-    return await this.permissionService.createPermission(createPermissionDto);
+    return this.permissionService.createPermission(createPermissionDto);
   }
 
   @Get('')

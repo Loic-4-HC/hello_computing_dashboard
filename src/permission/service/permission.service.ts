@@ -1,5 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CustomException } from '../../utils/custom-exeption.filter';
 import { Repository } from 'typeorm';
 import { CreatePermissionDto } from '../dto/create-permission.dto';
 import { UpdatePermissionDto } from '../dto/update-permission.dto';
@@ -29,7 +30,10 @@ export class PermissionService {
     // better to check name
     if (isPermissionExisting !== null) {
       // permission name is already taken
-      throw new CustomException('invalid input', HttpStatus.BAD_REQUEST);
+      throw new CustomException(
+        'invalid input -- permission name is already taken',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     // new user
