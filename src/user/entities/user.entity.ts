@@ -27,16 +27,21 @@ export class UserEntity {
   @Column({
     name: 'last_name',
     type: 'varchar',
-    default: '',
   })
   lastName = '';
+
+  //   @Column({
+  //     generatedType: 'STORED',
+  //     asExpression: `'firstName' || ' ' || 'lastName'`,
+  //   })
+  //   fullName: string;
 
   @Column({
     name: 'full_name',
     type: 'varchar',
     default: '',
   })
-  fullName = `${this.firstName} ${this.lastName}`;
+  fullName = `'${this.firstName}' || ' ' || '${this.lastName}'`;
 
   @Column({
     name: 'profil_img',

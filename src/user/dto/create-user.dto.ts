@@ -22,7 +22,7 @@ export class CreateUserDto {
   @MinLength(3, {
     message: 'first name must be at least 2 characters',
   })
-  firstName: string;
+  firstName?: string;
 
   @IsString()
   @MinLength(3, {
@@ -30,10 +30,9 @@ export class CreateUserDto {
   })
   lastName: string;
 
+  // fullName?: string;
+
   @IsString()
-  @MinLength(8, {
-    message: 'user shlould have a profil ia',
-  })
   profilImage?: string;
 
   @IsOptional()

@@ -24,7 +24,7 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     const isUserExisting = await this.findUserByEmail(createUserDto.email);
 
-    if (isUserExisting !== null) {
+    if (isUserExisting?.email) {
       // user already exisiting
       throw new CustomException(
         'invalid input : user already existing',
@@ -40,21 +40,24 @@ export class UserService {
   async findAll() {
     const users = await this.userRepository.find();
 
-    if (users === null) {
-      throw new CustomException('No user found', HttpStatus.NOT_FOUND);
+    if (Array.isArray(users)) {
+      return users;
     }
-
-    return users;
+    throw new CustomException('No user found', HttpStatus.NOT_FOUND);
   }
 
   async findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return this.userRepository.findOne({
+      where: {
+        uid: id,
+      },
+    });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     const isUserExisting = await this.findUserByEmail(updateUserDto.email);
 
-    if (isUserExisting !== null) {
+    if (isUserExisting?.uid === id) {
       // user already exisiting
       throw new CustomException(
         'invalid input : user already existing',

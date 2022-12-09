@@ -71,8 +71,8 @@ export class UserController {
     status: 400,
     description: 'Invalid Input.',
   })
-  async findOne(@Param('id') id: string) {
-    return await this.userService.findOne(+id);
+  async findOne(@Param('id') id: number) {
+    return await this.userService.findOne(id);
   }
 
   @Patch(':id')
