@@ -1,4 +1,4 @@
-import { CreateAdresseDto } from 'src/adresse/dto/create-adresse.dto';
+import { CreateAdresseDto } from '../dto/create-user.dto';
 import {
   Column,
   CreateDateColumn,
