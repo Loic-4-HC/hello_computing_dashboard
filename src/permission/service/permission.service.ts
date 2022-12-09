@@ -27,8 +27,7 @@ export class PermissionService {
       createPermissionDto.name,
     );
 
-    // better to check name
-    if (isPermissionExisting.name === createPermissionDto.name) {
+    if (isPermissionExisting?.name) {
       // permission name is already taken
       throw new CustomException(
         'invalid input -- permission name is already taken',
