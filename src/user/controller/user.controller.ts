@@ -72,7 +72,7 @@ export class UserController {
     description: 'Invalid Input.',
   })
   async findOne(@Param('id') id: number) {
-    return await this.userService.findOne(id);
+    return await this.userService.findUserById(id);
   }
 
   @Patch(':id')

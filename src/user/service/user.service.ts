@@ -46,12 +46,17 @@ export class UserService {
     throw new CustomException('No user found', HttpStatus.NOT_FOUND);
   }
 
-  async findOne(id: number) {
-    return this.userRepository.findOne({
-      where: {
-        uid: id,
-      },
-    });
+  async findUserById(id: number) {
+    return this.userRepository
+      .findOne({
+        where: {
+          uid: id,
+        },
+      })
+      .catch((e) => {
+        console.error('failed to findUserByID .throw ', JSON.stringify(e));
+        throw new CustomException('user not found', HttpStatus.NOT_FOUND);
+      });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
