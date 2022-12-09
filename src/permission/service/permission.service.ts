@@ -22,13 +22,13 @@ export class PermissionService {
   }
 
   async createPermission(createPermissionDto: CreatePermissionDto) {
-    //permission not isPermsíssion
+    //permission not is Permsíssion
     const isPermissionExisting = await this.findPermissionByName(
       createPermissionDto.name,
     );
 
     // better to check name
-    if (isPermissionExisting !== null) {
+    if (isPermissionExisting.name === createPermissionDto.name) {
       // permission name is already taken
       throw new CustomException(
         'invalid input -- permission name is already taken',
@@ -67,18 +67,15 @@ export class PermissionService {
   }
 
   async updatePermission(id: number, updatePermissionDto: UpdatePermissionDto) {
-    const isPermissionExisting = await this.findPermissionByName(
-      updatePermissionDto.name,
-    );
+    const initialPermission = await this.findPermissionById(id);
 
-    if (isPermissionExisting === null) {
-      // permission does not exists
-      throw new CustomException('invalid input', HttpStatus.NOT_FOUND);
+    if (initialPermission.id === id) {
+      // permission exists
+      return await this.permissionRepository.update(id, {
+        name: updatePermissionDto.name,
+        description: updatePermissionDto.description,
+      });
     }
-
-    return await this.permissionRepository.update(id, {
-      name: updatePermissionDto.name,
-      description: updatePermissionDto.description,
-    });
+    throw new CustomException('invalid input', HttpStatus.NOT_FOUND);
   }
 }
