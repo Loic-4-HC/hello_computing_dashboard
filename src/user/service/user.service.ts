@@ -53,8 +53,8 @@ export class UserService {
           uid: id,
         },
       })
-      .catch((e) => {
-        console.error('failed to findUserByID .throw ', JSON.stringify(e));
+      .catch((error) => {
+        console.error('failed to findUserByID .throw ', JSON.stringify(error));
         throw new CustomException('user not found', HttpStatus.NOT_FOUND);
       });
   }
@@ -62,7 +62,7 @@ export class UserService {
   async update(id: number, updateUserDto: UpdateUserDto) {
     const isUserExisting = await this.findUserByEmail(updateUserDto.email);
 
-    if (isUserExisting?.uid === id) {
+    if (isUserExisting) {
       // user already exisiting
       throw new CustomException(
         'invalid input : user already existing',
@@ -74,6 +74,14 @@ export class UserService {
   }
 
   async remove(id: number) {
-    return `This action removes a #${id} user`;
+    const isUserExisting = await this.findUserById(id);
+
+    if (isUserExisting) {
+      // user already exisiting
+      throw new CustomException(
+        'invalid input : user already existing',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }

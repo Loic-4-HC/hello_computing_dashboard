@@ -117,7 +117,7 @@ export class UserController {
     status: 400,
     description: 'Invalid Input.',
   })
-  async remove(@Param('id') id: string) {
-    return await this.userService.remove(+id);
+  async remove(@Param('id') id: number) {
+    return await this.userService.remove(id);
   }
 }
