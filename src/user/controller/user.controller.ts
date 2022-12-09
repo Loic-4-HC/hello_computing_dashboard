@@ -7,8 +7,6 @@ import {
   Param,
   Delete,
   Inject,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { CreateUserDto } from '../dto/create-user.dto';

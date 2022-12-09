@@ -8,7 +8,7 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { CreateAdresseDto } from '../../adresse/dto/create-adresse.dto';
+import { CreateAdresseDto } from '../dto/create-adress.dto';
 
 export class CreateUserDto {
   @IsEmail()
