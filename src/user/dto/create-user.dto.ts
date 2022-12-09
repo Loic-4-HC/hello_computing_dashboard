@@ -24,13 +24,13 @@ export class CreateUserDto {
   })
   firstName: string;
 
+  @IsString()
   @MinLength(3, {
     message: 'last name must be at least 2 characters',
   })
-  @IsString()
   lastName: string;
 
-  @IsNotEmpty()
+  @IsString()
   @MinLength(8, {
     message: 'user shlould have a profil ia',
   })
