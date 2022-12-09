@@ -43,11 +43,11 @@ export class UserController {
   }
 
   @Get()
-  // @ApiResponse({
-  //   status: 201,
-  //   description: 'A new user was succesfully created',
-  //   type: CreateUserDto,
-  // })
+  @ApiResponse({
+    status: 200,
+    description: 'List of users founded',
+    type: UserEntity,
+  })
   @ApiResponse({
     status: 400,
     description: 'Invalid Input.',
@@ -62,11 +62,11 @@ export class UserController {
     required: true,
     description: 'id of the researched user',
   })
-  // @ApiResponse({
-  //   status: 201,
-  //   description: 'A new user was succesfully created',
-  //   type: UserEntity,
-  // })
+  @ApiResponse({
+    status: 200,
+    description: 'Users founded',
+    type: UserEntity,
+  })
   @ApiResponse({
     status: 400,
     description: 'Invalid Input.',

@@ -11,18 +11,21 @@ import {
 import { CreateAdresseDto } from '../dto/create-adress.dto';
 
 export class CreateUserDto {
+  @IsString({
+    message: 'email must be a string',
+  })
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
   @IsString()
   @MinLength(3, {
-    message: 'first name should be at least 2 characters',
+    message: 'first name must be at least 2 characters',
   })
   firstName: string;
 
   @MinLength(3, {
-    message: 'last name should be at least 2 characters',
+    message: 'last name must be at least 2 characters',
   })
   @IsString()
   lastName: string;
@@ -35,8 +38,8 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsString()
-  @MinLength(3, {
-    message: 'phone number should be at least 2 characters',
+  @MinLength(7, {
+    message: 'phone number must be at least 7 characters', // smallest digit number according to international phone numbering plan (ITU-T E. 164)
   })
   phoneNumber?: string;
 
