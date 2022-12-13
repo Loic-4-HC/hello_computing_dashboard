@@ -9,7 +9,6 @@ async function bootstrap() {
   app.useLogger(app.get(Logger));
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
-
   const swaggerConfig = new DocumentBuilder()
     .setTitle('HELLO COMPUTING DASHBOARD')
     .setDescription('API developed for hello computing dashboard')

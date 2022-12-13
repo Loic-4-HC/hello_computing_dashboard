@@ -11,8 +11,6 @@ export class PermissionEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  //update PermissionEntity set description = 'xxx' where id = 'sdf'
-
   @Column({
     type: 'varchar',
     unique: true,
@@ -34,9 +32,7 @@ export class PermissionEntity {
 
   @UpdateDateColumn({
     name: 'updated_at',
-    type: 'timestamptz',
-    // default: () => 'CURRENT_TIMESTAkMP(6)',
-    // onUpdate: 'CURRENT_TIMESTAMP(6)',
+    type: 'timestamptz', //date_time_with_timezone
     nullable: true,
   })
   updatedAt: Date;

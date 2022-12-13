@@ -1,15 +1,5 @@
-import {
-  ApiHideProperty,
-  ApiProperty,
-  ApiPropertyOptional,
-} from '@nestjs/swagger';
-import {
-  MinLength,
-  Matches,
-  IsString,
-  IsOptional,
-  IsUUID,
-} from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { MinLength, Matches, IsString, IsOptional } from 'class-validator';
 
 export class CreatePermissionDto {
   @ApiProperty({

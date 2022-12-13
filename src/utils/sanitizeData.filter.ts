@@ -1,5 +1,5 @@
-import { CreatePermissionDto } from 'src/permission/dto/create-permission.dto';
-import { UpdatePermissionDto } from 'src/permission/dto/update-permission.dto';
+import { CreatePermissionDto } from '../permission/dto/create-permission.dto';
+import { UpdatePermissionDto } from '../permission/dto/update-permission.dto';
 
 export function SanitizeData(
   permission: CreatePermissionDto | UpdatePermissionDto,

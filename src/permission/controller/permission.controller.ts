@@ -9,7 +9,7 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { SanitizeData } from 'src/utils/sanitizeData.filter';
+import { SanitizeData } from '../../utils/sanitizeData.filter';
 import { ApiCreate } from '../decorators/swagger-api/api-create.decorator';
 import { ApiFindAll } from '../decorators/swagger-api/api-findAll.decorator';
 import { ApiFindOne } from '../decorators/swagger-api/api-findOne.decorator';

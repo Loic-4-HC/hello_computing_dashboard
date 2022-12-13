@@ -6,7 +6,6 @@ import {
   ApiCreatedResponse,
   ApiBadRequestResponse,
   ApiResponse,
-  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { CreatePermissionDto } from '../../dto/create-permission.dto';
 import { Permission } from '../../dto/permission.dto';

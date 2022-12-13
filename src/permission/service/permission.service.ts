@@ -17,14 +17,6 @@ export class PermissionService {
 
   private readonly logger = new Logger(PermissionService.name);
 
-  async findPermissionByName(name: string): Promise<PermissionEntity> {
-    return await this.permissionRepository.findOne({
-      where: {
-        name: name,
-      },
-    });
-  }
-
   async createPermission(createPermissionDto: CreatePermissionDto) {
     this.logger.log(`Create Permission`);
     //permission not is Permsíssion
@@ -69,6 +61,14 @@ export class PermissionService {
         this.logger.error({ id: id }, `Get permission by ID`);
         throw new CustomException('Permission not found', HttpStatus.NOT_FOUND);
       });
+  }
+
+  async findPermissionByName(name: string): Promise<PermissionEntity> {
+    return await this.permissionRepository.findOne({
+      where: {
+        name: name,
+      },
+    });
   }
 
   async updatePermission(id: string, updatePermissionDto: UpdatePermissionDto) {
