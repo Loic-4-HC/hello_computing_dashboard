@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CustomException } from '../../utils/custom-exeption.filter';
 import { Repository } from 'typeorm';
@@ -13,6 +13,8 @@ export class PermissionService {
     @InjectRepository(PermissionEntity)
     private readonly permissionRepository: Repository<PermissionEntity>,
   ) {}
+
+  private readonly logger = new Logger(PermissionService.name);
 
   async findPermissionByName(name: string): Promise<PermissionEntity> {
     return await this.permissionRepository.findOne({
