@@ -8,10 +8,14 @@ import {
   Inject,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
+import { SanitizeData } from 'src/utils/sanitizeData.filter';
+import { ApiCreate } from '../decorators/swagger-api/api-create.decorator';
+import { ApiFindAll } from '../decorators/swagger-api/api-findAll.decorator';
+import { ApiFindOne } from '../decorators/swagger-api/api-findOne.decorator';
+import { ApiUpdate } from '../decorators/swagger-api/api-update.decorator';
 import { CreatePermissionDto } from '../dto/create-permission.dto';
 import { UpdatePermissionDto } from '../dto/update-permission.dto';
-import { PermissionEntity } from '../entities/permission.entity';
 import { PermissionService } from '../service/permission.service';
 
 @Controller('permission')
@@ -23,44 +27,31 @@ export class PermissionController {
   ) {}
 
   @Post('')
-  @ApiParam({
-    name: 'createPermissionDto',
-    required: true,
-    description: 'it must be a new permission',
-    type: CreatePermissionDto,
-  })
-  @ApiResponse({
-    status: 201,
-    description: 'A new permission was succesfully created',
-    type: PermissionEntity,
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid Input.',
-  })
+  @ApiCreate()
   async createPermission(@Body() createPermissionDto: CreatePermissionDto) {
-    return this.permissionService.createPermission(createPermissionDto);
+    const createPerm = SanitizeData(createPermissionDto);
+    return this.permissionService.createPermission(createPerm);
   }
 
   @Get('')
+  @ApiFindAll()
   async findAllPermission() {
     return await this.permissionService.findAllPermissions();
   }
 
   @Get(':id')
-  async findOnePermission(@Param('id') id: number) {
+  @ApiFindOne()
+  async findOnePermission(@Param('id') id: string) {
     return await this.permissionService.findPermissionById(id);
   }
 
-  @Patch('update/:uuid')
-  // @UseGuards(PermissionGuard(ManagePermissions.UpdatePermission))
+  @Patch(':id')
+  @ApiUpdate()
   async updatePermission(
-    @Param('uuid', new ParseUUIDPipe()) uuid: number,
+    @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updatePermissionDto: UpdatePermissionDto,
   ) {
-    return await this.permissionService.updatePermission(
-      uuid,
-      updatePermissionDto,
-    );
+    const updatePerm = SanitizeData(updatePermissionDto);
+    return await this.permissionService.updatePermission(id, updatePerm);
   }
 }

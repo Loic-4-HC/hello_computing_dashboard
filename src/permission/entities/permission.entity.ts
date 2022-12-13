@@ -9,7 +9,7 @@ import {
 @Entity()
 export class PermissionEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   //update PermissionEntity set description = 'xxx' where id = 'sdf'
 
@@ -27,16 +27,16 @@ export class PermissionEntity {
 
   @CreateDateColumn({
     name: 'created_at',
-    type: 'timestamp',
+    type: 'timestamptz', //date_time_with_timezone
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
     name: 'updated_at',
-    type: 'timestamp',
+    type: 'timestamptz',
     // default: () => 'CURRENT_TIMESTAkMP(6)',
-    onUpdate: 'CURRENT_TIMESTAMP(6)',
+    // onUpdate: 'CURRENT_TIMESTAMP(6)',
     nullable: true,
   })
   updatedAt: Date;

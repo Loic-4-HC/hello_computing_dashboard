@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreatePermissionDto } from '../dto/create-permission.dto';
 import { UpdatePermissionDto } from '../dto/update-permission.dto';
 import { PermissionEntity } from '../entities/permission.entity';
+import { PermissionDto } from '../dto/permission.dto';
 
 @Injectable()
 export class PermissionService {
@@ -35,8 +36,14 @@ export class PermissionService {
       );
     }
 
+    // const prm = new InsertPermissionDto
     // new user
-    const newPermission = this.permissionRepository.create(createPermissionDto);
+
+    const prm = new PermissionDto();
+    prm.name = createPermissionDto.name;
+    prm.description = createPermissionDto.description;
+
+    const newPermission = this.permissionRepository.create(prm);
     return this.permissionRepository.save(newPermission);
   }
 
@@ -49,7 +56,7 @@ export class PermissionService {
     throw new CustomException('No permission found', HttpStatus.NOT_FOUND);
   }
 
-  async findPermissionById(id: number): Promise<PermissionEntity> {
+  async findPermissionById(id: string): Promise<PermissionEntity> {
     return await this.permissionRepository
       .findOne({
         where: {
@@ -57,23 +64,32 @@ export class PermissionService {
         },
       })
       .catch((e) => {
-        console.error(
-          'failed to findPermissionById .throw ',
-          JSON.stringify(e),
-        );
+        console.error('Failed to findPermissionById.throw ', JSON.stringify(e));
         throw new CustomException('Permission not found', HttpStatus.NOT_FOUND);
       });
   }
 
-  async updatePermission(id: number, updatePermissionDto: UpdatePermissionDto) {
+  async updatePermission(id: string, updatePermissionDto: UpdatePermissionDto) {
     const initialPermission = await this.findPermissionById(id);
 
-    if (initialPermission.id === id) {
+    // const perm = return PermissionDto(..initialPermission);
+
+    if (initialPermission) {
       // permission exists
-      return await this.permissionRepository.update(id, {
-        name: updatePermissionDto.name,
-        description: updatePermissionDto.description,
-      });
+      // const prm = new PermissionDto();
+      // // prm.id = initialPermission.id;
+      // prm.name = updatePermissionDto.name;
+      // prm.description = updatePermissionDto.description;
+      // // prm.createdAt = initialPermission.createdAt;
+
+      // return this.permissionRepository.save({
+      //   ...initialPermission,
+      //   // ...updatePermissionDto,
+      //   ...prm,
+      // });
+
+      await this.permissionRepository.update(id, updatePermissionDto);
+      return this.findPermissionById(id);
     }
     throw new CustomException('invalid input', HttpStatus.NOT_FOUND);
   }

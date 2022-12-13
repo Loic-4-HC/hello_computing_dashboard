@@ -5,12 +5,16 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.setGlobalPrefix('api');
-
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('HELLO COMPUTING API')
+    .setTitle('HELLO COMPUTING DASHBOARD')
     .setDescription('API developed for hello computing dashboard')
     .setVersion('1.0')
+    .setExternalDoc(
+      'http://localhost:3000/api-json',
+      'http://localhost:3000/api-json',
+    )
+    .addOAuth2()
+    // .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
