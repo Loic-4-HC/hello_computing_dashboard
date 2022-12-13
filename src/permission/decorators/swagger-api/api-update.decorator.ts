@@ -5,7 +5,7 @@ import {
   ApiResponse,
   ApiParam,
 } from '@nestjs/swagger';
-import { PermissionDto } from '../../dto/permission.dto';
+import { Permission } from '../../dto/permission.dto';
 import { UpdatePermissionDto } from '../../dto/update-permission.dto';
 
 export function ApiUpdate() {
@@ -15,7 +15,7 @@ export function ApiUpdate() {
     }),
     ApiOkResponse({
       status: HttpStatus.OK,
-      type: PermissionDto,
+      type: Permission,
       description: 'Successful operation.',
     }),
     ApiResponse({

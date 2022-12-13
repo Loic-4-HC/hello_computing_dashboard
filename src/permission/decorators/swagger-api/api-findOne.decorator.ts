@@ -6,7 +6,7 @@ import {
   ApiForbiddenResponse,
   ApiParam,
 } from '@nestjs/swagger';
-import { PermissionDto } from '../../dto/permission.dto';
+import { Permission } from '../../dto/permission.dto';
 export function ApiFindOne() {
   return applyDecorators(
     ApiOperation({
@@ -15,7 +15,7 @@ export function ApiFindOne() {
     }),
     ApiOkResponse({
       status: HttpStatus.OK,
-      type: PermissionDto,
+      type: Permission,
       description: 'Successful operation.',
     }),
     ApiNotFoundResponse({

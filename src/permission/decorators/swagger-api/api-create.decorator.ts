@@ -9,7 +9,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { CreatePermissionDto } from '../../dto/create-permission.dto';
-import { PermissionDto } from '../../dto/permission.dto';
+import { Permission } from '../../dto/permission.dto';
 
 export function ApiCreate() {
   return applyDecorators(
@@ -26,7 +26,7 @@ export function ApiCreate() {
     }),
     ApiCreatedResponse({
       status: HttpStatus.CREATED,
-      type: PermissionDto,
+      type: Permission,
       description: 'The permission have been successfully created',
     }),
     ApiBadRequestResponse({

@@ -5,7 +5,7 @@ export function SanitizeData(
   permission: CreatePermissionDto | UpdatePermissionDto,
 ): CreatePermissionDto {
   const newPerm = new CreatePermissionDto();
-  newPerm.name = permission.name.trim().toLowerCase();
-  newPerm.description = permission.description.trim();
+  newPerm.name = permission.name?.trim().toLowerCase();
+  newPerm.description = permission.description?.trim().toLocaleLowerCase();
   return newPerm;
 }

@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { CreatePermissionDto } from '../dto/create-permission.dto';
 import { UpdatePermissionDto } from '../dto/update-permission.dto';
 import { PermissionEntity } from '../entities/permission.entity';
-import { PermissionDto } from '../dto/permission.dto';
+import { Permission } from '../dto/permission.dto';
 
 @Injectable()
 export class PermissionService {
@@ -36,13 +36,7 @@ export class PermissionService {
       );
     }
 
-    // const prm = new InsertPermissionDto
-    // new user
-
-    const prm = new PermissionDto();
-    prm.name = createPermissionDto.name;
-    prm.description = createPermissionDto.description;
-
+    const prm = Permission.initialize(createPermissionDto);
     const newPermission = this.permissionRepository.create(prm);
     return this.permissionRepository.save(newPermission);
   }
@@ -72,25 +66,22 @@ export class PermissionService {
   async updatePermission(id: string, updatePermissionDto: UpdatePermissionDto) {
     const initialPermission = await this.findPermissionById(id);
 
-    // const perm = return PermissionDto(..initialPermission);
-
     if (initialPermission) {
-      // permission exists
-      // const prm = new PermissionDto();
-      // // prm.id = initialPermission.id;
-      // prm.name = updatePermissionDto.name;
-      // prm.description = updatePermissionDto.description;
-      // // prm.createdAt = initialPermission.createdAt;
-
-      // return this.permissionRepository.save({
-      //   ...initialPermission,
-      //   // ...updatePermissionDto,
-      //   ...prm,
-      // });
+      if (
+        (typeof initialPermission.description === 'undefined' ||
+          initialPermission.description === null) &&
+        (typeof updatePermissionDto.description === 'undefined' ||
+          updatePermissionDto.description === null)
+      ) {
+        throw new CustomException(
+          'Invalid input -- need to add a description',
+          HttpStatus.NOT_FOUND,
+        );
+      }
 
       await this.permissionRepository.update(id, updatePermissionDto);
       return this.findPermissionById(id);
     }
-    throw new CustomException('invalid input', HttpStatus.NOT_FOUND);
+    throw new CustomException('Invalid input', HttpStatus.NOT_FOUND);
   }
 }
