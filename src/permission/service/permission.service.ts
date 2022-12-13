@@ -6,12 +6,13 @@ import { CreatePermissionDto } from '../dto/create-permission.dto';
 import { UpdatePermissionDto } from '../dto/update-permission.dto';
 import { PermissionEntity } from '../entities/permission.entity';
 import { Permission } from '../dto/permission.dto';
+// import { PinoLogger, InjectPinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class PermissionService {
   constructor(
     @InjectRepository(PermissionEntity)
-    private readonly permissionRepository: Repository<PermissionEntity>,
+    private readonly permissionRepository: Repository<PermissionEntity>, // private readonly logger: PinoLogger,
   ) {}
 
   private readonly logger = new Logger(PermissionService.name);
@@ -25,6 +26,7 @@ export class PermissionService {
   }
 
   async createPermission(createPermissionDto: CreatePermissionDto) {
+    this.logger.log(`Create Permission`);
     //permission not is Permsíssion
     const isPermissionExisting = await this.findPermissionByName(
       createPermissionDto.name,
@@ -32,6 +34,7 @@ export class PermissionService {
 
     if (isPermissionExisting?.name) {
       // permission name is already taken
+      this.logger.error({ createPermissionDto }, `Create Permission`);
       throw new CustomException(
         'invalid input -- permission name is already taken',
         HttpStatus.BAD_REQUEST,
@@ -44,6 +47,7 @@ export class PermissionService {
   }
 
   async findAllPermissions() {
+    this.logger.log(`Retrieve all Permissions`);
     const permissions = await this.permissionRepository.find();
 
     if (Array.isArray(permissions)) {
@@ -53,6 +57,7 @@ export class PermissionService {
   }
 
   async findPermissionById(id: string): Promise<PermissionEntity> {
+    this.logger.log(`Find Permission By ID`);
     return await this.permissionRepository
       .findOne({
         where: {
@@ -60,12 +65,14 @@ export class PermissionService {
         },
       })
       .catch((e) => {
-        console.error('Failed to findPermissionById.throw ', JSON.stringify(e));
+        // console.error('Failed to findPermissionById.throw ', JSON.stringify(e));
+        this.logger.error({ id: id }, `Get permission by ID`);
         throw new CustomException('Permission not found', HttpStatus.NOT_FOUND);
       });
   }
 
   async updatePermission(id: string, updatePermissionDto: UpdatePermissionDto) {
+    this.logger.log(`Update Permission`);
     const initialPermission = await this.findPermissionById(id);
 
     if (initialPermission) {

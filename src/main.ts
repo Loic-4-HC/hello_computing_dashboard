@@ -1,12 +1,14 @@
-import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
   app.useLogger(app.get(Logger));
+  app.useGlobalInterceptors(new LoggerErrorInterceptor());
+
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('HELLO COMPUTING DASHBOARD')
