@@ -1,3 +1,4 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsEmail,
@@ -11,6 +12,9 @@ import {
 import { CreateAdresseDto } from '../dto/create-adress.dto';
 
 export class CreateUserDto {
+  @ApiProperty({
+    example: 'example@example.cm',
+  })
   @IsString({
     message: 'email must be a string',
   })
@@ -18,12 +22,18 @@ export class CreateUserDto {
   @IsNotEmpty()
   email: string;
 
+  @ApiProperty({
+    example: 'John',
+  })
   @IsString()
   @MinLength(3, {
     message: 'first name must be at least 2 characters',
   })
-  firstName?: string;
+  firstName: string;
 
+  @ApiProperty({
+    example: 'Nsame',
+  })
   @IsString()
   @MinLength(3, {
     message: 'last name must be at least 2 characters',
@@ -32,9 +42,15 @@ export class CreateUserDto {
 
   // fullName?: string;
 
+  @ApiPropertyOptional({
+    example: 'to complete',
+  })
   @IsString()
   profilImage?: string;
 
+  @ApiPropertyOptional({
+    example: '695838293',
+  })
   @IsOptional()
   @IsString()
   @MinLength(7, {
@@ -42,6 +58,9 @@ export class CreateUserDto {
   })
   phoneNumber?: string;
 
+  @ApiPropertyOptional({
+    example: '',
+  })
   @IsNotEmptyObject()
   @ValidateNested()
   @Type(() => CreateAdresseDto)

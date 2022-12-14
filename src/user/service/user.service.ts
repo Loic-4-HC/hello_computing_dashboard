@@ -46,7 +46,7 @@ export class UserService {
     throw new CustomException('No user found', HttpStatus.NOT_FOUND);
   }
 
-  async findUserById(id: number) {
+  async findUserById(id: string) {
     return this.userRepository
       .findOne({
         where: {
@@ -73,15 +73,18 @@ export class UserService {
     return this.userRepository.update(id, updateUserDto);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const isUserExisting = await this.findUserById(id);
 
+    console.log(isUserExisting);
+
     if (isUserExisting) {
-      // user already exisiting
-      throw new CustomException(
-        'invalid input : user already existing',
-        HttpStatus.BAD_REQUEST,
-      );
+      return this.userRepository.delete(id);
     }
+
+    throw new CustomException(
+      'invalid input : user already existing',
+      HttpStatus.BAD_REQUEST,
+    );
   }
 }

@@ -5,8 +5,6 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.setGlobalPrefix('api');
-
   const swaggerConfig = new DocumentBuilder()
     .setTitle('HELLO COMPUTING API')
     .setDescription('API developed for hello computing dashboard')

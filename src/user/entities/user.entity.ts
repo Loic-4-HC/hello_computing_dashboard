@@ -10,7 +10,7 @@ import {
 @Entity()
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
-  uid: number;
+  uid: string;
 
   @Column({
     type: 'varchar',
@@ -64,16 +64,14 @@ export class UserEntity {
 
   @CreateDateColumn({
     name: 'created_at',
-    type: 'timestamp',
+    type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
     name: 'updated_at',
-    type: 'timestamp',
-    // default: () => 'CURRENT_TIMESTAkMP(6)',
-    onUpdate: 'CURRENT_TIMESTAMP(6)',
+    type: 'timestamptz',
     nullable: true,
   })
   updatedAt: Date;
