@@ -1,61 +1,63 @@
+import { HttpStatus } from '@nestjs/common';
 import { applyDecorators } from '@nestjs/common/decorators';
 import {
+  ApiBadRequestResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
-  ApiResponse,
 } from '@nestjs/swagger';
-import { User } from '../../dto/user.dto';
-import { UpdateUserDto } from '../../dto/update-user.dto';
-import { UserEntity } from '../../entities/user.entity';
-import { HttpStatus } from '@nestjs/common';
+import { User } from '../dto/user.dto';
 
-export function ApiUpdate() {
+export function ApiFindOne() {
   return applyDecorators(
     ApiOperation({
-      summary: 'Update an existing user',
+      summary: 'Find user by ID',
+      description: 'Return a single user',
     }),
     ApiParam({
-      name: 'updateUserDto',
+      name: 'id',
       required: true,
-      description: 'updated user information',
-      type: UpdateUserDto,
+      description: 'ID of the researched user',
+      type: String,
+      format: 'uuid',
     }),
     ApiOkResponse({
       status: HttpStatus.OK,
-      description: 'A new user was succesfully created',
+      description: 'Successful operation',
       type: User,
     }),
-    ApiResponse({
+    ApiBadRequestResponse({
       status: HttpStatus.BAD_REQUEST,
-      description: 'Invalid ID value.',
+      description: 'Invalid input.',
       schema: {
         type: 'object',
         example: {
           statusCode: HttpStatus.BAD_REQUEST,
-          message: 'Validation failed (uuid is expected)',
+          message: 'Invalid input',
         },
       },
     }),
-    ApiResponse({
+    ApiForbiddenResponse({
       status: HttpStatus.FORBIDDEN,
-      description: 'Unauthorized access',
+      description: 'UnauthorizedException',
       schema: {
         type: 'object',
         example: {
           statusCode: HttpStatus.FORBIDDEN,
-          message: 'Unauthorized access',
+          message: 'UnauthorizedException',
         },
       },
     }),
-    ApiResponse({
+    ApiNotFoundResponse({
       status: HttpStatus.NOT_FOUND,
       description: 'User was not found',
       schema: {
         type: 'object',
         example: {
           statusCode: HttpStatus.NOT_FOUND,
-          message: 'User not found',
+          message: 'User was not found',
         },
       },
     }),

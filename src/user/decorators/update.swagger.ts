@@ -1,63 +1,60 @@
-import { HttpStatus } from '@nestjs/common';
 import { applyDecorators } from '@nestjs/common/decorators';
 import {
-  ApiBadRequestResponse,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
+  ApiResponse,
 } from '@nestjs/swagger';
-import { User } from '../../dto/user.dto';
+import { User } from '../dto/user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { HttpStatus } from '@nestjs/common';
 
-export function ApiFindOne() {
+export function ApiUpdate() {
   return applyDecorators(
     ApiOperation({
-      summary: 'Find user by ID',
-      description: 'Return a single user',
+      summary: 'Update an existing user',
     }),
     ApiParam({
-      name: 'id',
+      name: 'updateUserDto',
       required: true,
-      description: 'ID of the researched user',
-      type: String,
-      format: 'uuid',
+      description: 'updated user information',
+      type: UpdateUserDto,
     }),
     ApiOkResponse({
       status: HttpStatus.OK,
-      description: 'Successful operation',
+      description: 'A new user was succesfully created',
       type: User,
     }),
-    ApiBadRequestResponse({
+    ApiResponse({
       status: HttpStatus.BAD_REQUEST,
-      description: 'Invalid input.',
+      description: 'Invalid ID value.',
       schema: {
         type: 'object',
         example: {
           statusCode: HttpStatus.BAD_REQUEST,
-          message: 'Invalid input',
+          message: 'Validation failed (uuid is expected)',
         },
       },
     }),
-    ApiForbiddenResponse({
+    ApiResponse({
       status: HttpStatus.FORBIDDEN,
-      description: 'UnauthorizedException',
+      description: 'Unauthorized access',
       schema: {
         type: 'object',
         example: {
           statusCode: HttpStatus.FORBIDDEN,
-          message: 'UnauthorizedException',
+          message: 'Unauthorized access',
         },
       },
     }),
-    ApiNotFoundResponse({
+    ApiResponse({
       status: HttpStatus.NOT_FOUND,
       description: 'User was not found',
       schema: {
         type: 'object',
         example: {
           statusCode: HttpStatus.NOT_FOUND,
-          message: 'User was not found',
+          message: 'User not found',
         },
       },
     }),

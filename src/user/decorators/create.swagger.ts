@@ -6,8 +6,8 @@ import {
   ApiOperation,
   ApiParam,
 } from '@nestjs/swagger';
-import { User } from '../../dto/user.dto';
-import { CreateUserDto } from '../../dto/create-user.dto';
+import { User } from '../dto/user.dto';
+import { CreateUserDto } from '../dto/create-user.dto';
 
 export function ApiCreate() {
   return applyDecorators(

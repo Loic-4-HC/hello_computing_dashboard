@@ -8,15 +8,14 @@ import {
   Delete,
   Inject,
 } from '@nestjs/common';
-import { ApiTags, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { ApiCreate } from '../decorators/swagger/api-create.decorator';
-import { ApiDelete } from '../decorators/swagger/api-delete.decorator';
-import { ApiFindAll } from '../decorators/swagger/api-findAll.decorator';
-import { ApiFindOne } from '../decorators/swagger/api-findOne.decorator';
-import { ApiUpdate } from '../decorators/swagger/api-update.decorator';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiCreate } from '../decorators/create.swagger';
+import { ApiDelete } from '../decorators/delete.swagger';
+import { ApiFindAll } from '../decorators/find-all.swagger';
+import { ApiFindOne } from '../decorators/find-one.swagger';
+import { ApiUpdate } from '../decorators/update.swagger';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { UserEntity } from '../entities/user.entity';
 import { UserService } from '../service/user.service';
 
 @Controller('user')
