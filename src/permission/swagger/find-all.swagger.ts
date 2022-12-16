@@ -1,6 +1,6 @@
 import { applyDecorators, HttpStatus } from '@nestjs/common';
 import { ApiOperation, ApiOkResponse, ApiResponse } from '@nestjs/swagger';
-import { Permission } from '../../dto/permission.dto';
+import { Permission } from '../dto/permission.dto';
 export function ApiFindAll() {
   return applyDecorators(
     ApiOperation({

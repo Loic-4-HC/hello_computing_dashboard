@@ -6,7 +6,6 @@ import { CreatePermissionDto } from '../dto/create-permission.dto';
 import { UpdatePermissionDto } from '../dto/update-permission.dto';
 import { PermissionEntity } from '../entities/permission.entity';
 import { Permission } from '../dto/permission.dto';
-// import { PinoLogger, InjectPinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class PermissionService {
@@ -18,7 +17,6 @@ export class PermissionService {
   private readonly logger = new Logger(PermissionService.name);
 
   async createPermission(createPermissionDto: CreatePermissionDto) {
-    this.logger.log(`Create Permission`);
     //permission not is Permsíssion
     const isPermissionExisting = await this.findPermissionByName(
       createPermissionDto.name,
@@ -26,11 +24,15 @@ export class PermissionService {
 
     if (isPermissionExisting?.name) {
       // permission name is already taken
-      this.logger.error({ createPermissionDto }, `Create Permission`);
-      throw new CustomException(
-        'invalid input -- permission name is already taken',
+      const error = new CustomException(
+        `Invalid input. The permission name ${isPermissionExisting.name} is already taken`,
         HttpStatus.BAD_REQUEST,
       );
+      this.logger.error(`${JSON.stringify({
+        status : error.getStatus,
+        message: error.message
+      })}`);
+      throw error
     }
 
     const prm = Permission.initialize(createPermissionDto);
@@ -39,27 +41,33 @@ export class PermissionService {
   }
 
   async findAllPermissions() {
-    this.logger.log(`Retrieve all Permissions`);
     const permissions = await this.permissionRepository.find();
 
     if (Array.isArray(permissions)) {
       return permissions;
     }
-    throw new CustomException('No permission found', HttpStatus.NOT_FOUND);
+    const error = new CustomException(
+      'No permission found',
+      HttpStatus.NOT_FOUND,
+    );
+    this.logger.error(`${JSON.stringify(error)}`);
+    throw error
   }
 
   async findPermissionById(id: string): Promise<PermissionEntity> {
-    this.logger.log(`Find Permission By ID`);
     return await this.permissionRepository
       .findOne({
         where: {
           id: id,
         },
       })
-      .catch((e) => {
-        // console.error('Failed to findPermissionById.throw ', JSON.stringify(e));
-        this.logger.error({ id: id }, `Get permission by ID`);
-        throw new CustomException('Permission not found', HttpStatus.NOT_FOUND);
+      .catch((error) => {
+        this.logger.error(
+          `Failed to findPermissionById with the id ${id} \n
+          data : ${JSON.stringify(error)}`,
+        );
+
+        throw new CustomException('Permission not found', HttpStatus.NOT_FOUND); // to improve -- always log errors
       });
   }
 
@@ -72,25 +80,30 @@ export class PermissionService {
   }
 
   async updatePermission(id: string, updatePermissionDto: UpdatePermissionDto) {
-    this.logger.log(`Update Permission`);
     const initialPermission = await this.findPermissionById(id);
 
     if (initialPermission) {
       if (
-        (typeof initialPermission.description === 'undefined' ||
-          initialPermission.description === null) &&
-        (typeof updatePermissionDto.description === 'undefined' ||
-          updatePermissionDto.description === null)
+        (typeof initialPermission?.description === 'undefined' ||
+          initialPermission?.description === null) &&
+        (typeof updatePermissionDto?.description === 'undefined' ||
+          updatePermissionDto?.description === null)
       ) {
-        throw new CustomException(
+        const error = new CustomException(
           'Invalid input -- need to add a description',
           HttpStatus.NOT_FOUND,
         );
+        this.logger.error(`Invalid input -- need to add a description \n data : ${JSON.stringify(error)}`);
+        throw error
       }
 
       await this.permissionRepository.update(id, updatePermissionDto);
       return this.findPermissionById(id);
     }
-    throw new CustomException('Invalid input', HttpStatus.NOT_FOUND);
+
+    const error = new CustomException('Invalid input', HttpStatus.NOT_FOUND)
+    this.logger.error(`Invalid input \n data : ${JSON.stringify(error)}`)
+    throw error;
   }
+
 }

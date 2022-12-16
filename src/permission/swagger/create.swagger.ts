@@ -7,8 +7,8 @@ import {
   ApiBadRequestResponse,
   ApiResponse,
 } from '@nestjs/swagger';
-import { CreatePermissionDto } from '../../dto/create-permission.dto';
-import { Permission } from '../../dto/permission.dto';
+import { CreatePermissionDto } from '../dto/create-permission.dto';
+import { Permission } from '../dto/permission.dto';
 
 export function ApiCreate() {
   return applyDecorators(

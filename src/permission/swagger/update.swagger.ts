@@ -2,36 +2,36 @@ import { applyDecorators, HttpStatus } from '@nestjs/common';
 import {
   ApiOperation,
   ApiOkResponse,
-  ApiNotFoundResponse,
-  ApiForbiddenResponse,
+  ApiResponse,
   ApiParam,
 } from '@nestjs/swagger';
-import { Permission } from '../../dto/permission.dto';
-export function ApiFindOne() {
+import { Permission } from '../dto/permission.dto';
+import { UpdatePermissionDto } from '../dto/update-permission.dto';
+
+export function ApiUpdate() {
   return applyDecorators(
     ApiOperation({
-      summary: 'Find  permission by ID',
-      description: 'Return a single permission',
+      summary: 'Update an existing permission',
     }),
     ApiOkResponse({
       status: HttpStatus.OK,
       type: Permission,
       description: 'Successful operation.',
     }),
-    ApiNotFoundResponse({
+    ApiResponse({
       status: HttpStatus.BAD_REQUEST,
-      description: 'Invalid ID supplied',
+      description: 'Invalid ID value.',
       schema: {
         type: 'object',
         example: {
           statusCode: HttpStatus.BAD_REQUEST,
-          message: 'Permission not found',
+          message: 'Validation failed (uuid is expected)',
         },
       },
     }),
-    ApiForbiddenResponse({
+    ApiResponse({
       status: HttpStatus.FORBIDDEN,
-      description: 'UnauthorizedException',
+      description: 'Unauthorized access',
       schema: {
         type: 'object',
         example: {
@@ -40,7 +40,7 @@ export function ApiFindOne() {
         },
       },
     }),
-    ApiNotFoundResponse({
+    ApiResponse({
       status: HttpStatus.NOT_FOUND,
       description: 'Permission was not found',
       schema: {
@@ -52,9 +52,8 @@ export function ApiFindOne() {
       },
     }),
     ApiParam({
-      name: 'id',
-      type: String,
-      format: 'uuid',
+      name: 'updatePermissionDto',
+      type: UpdatePermissionDto,
     }),
   );
 }
