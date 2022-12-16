@@ -28,11 +28,8 @@ export class PermissionService {
         `Invalid input. The permission name ${isPermissionExisting.name} is already taken`,
         HttpStatus.BAD_REQUEST,
       );
-      this.logger.error(`${JSON.stringify({
-        status : error.getStatus,
-        message: error.message
-      })}`);
-      throw error
+      this.logger.error(`${JSON.stringify(error)}`);
+      throw error;
     }
 
     const prm = Permission.initialize(createPermissionDto);
@@ -51,7 +48,7 @@ export class PermissionService {
       HttpStatus.NOT_FOUND,
     );
     this.logger.error(`${JSON.stringify(error)}`);
-    throw error
+    throw error;
   }
 
   async findPermissionById(id: string): Promise<PermissionEntity> {
@@ -93,17 +90,20 @@ export class PermissionService {
           'Invalid input -- need to add a description',
           HttpStatus.NOT_FOUND,
         );
-        this.logger.error(`Invalid input -- need to add a description \n data : ${JSON.stringify(error)}`);
-        throw error
+        this.logger.error(
+          `Invalid input -- need to add a description \n data : ${JSON.stringify(
+            error,
+          )}`,
+        );
+        throw error;
       }
 
       await this.permissionRepository.update(id, updatePermissionDto);
       return this.findPermissionById(id);
     }
 
-    const error = new CustomException('Invalid input', HttpStatus.NOT_FOUND)
-    this.logger.error(`Invalid input \n data : ${JSON.stringify(error)}`)
+    const error = new CustomException('Invalid input', HttpStatus.NOT_FOUND);
+    this.logger.error(`Invalid input \n data : ${JSON.stringify(error)}`);
     throw error;
   }
-
 }
