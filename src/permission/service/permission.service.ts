@@ -79,12 +79,26 @@ export class PermissionService {
   async updatePermission(id: string, updatePermissionDto: UpdatePermissionDto) {
     const initialPermission = await this.findPermissionById(id);
 
+    //get the permission we want to update through its ID
     if (initialPermission) {
+      //check to know if the name we want to update the permission with, is already taken
+      const findByname = await this.findPermissionByName(
+        updatePermissionDto?.name,
+      );
+      if (findByname) {
+        // if a permission with the same name already exist throw an error
+        const error = new CustomException(
+          `Invalid input. The name ${updatePermissionDto.name} is already taken`,
+          HttpStatus.BAD_REQUEST,
+        );
+        this.logger.error(`${JSON.stringify(error)}`);
+        throw error;
+      }
+
+      // check if permission to be updated has a description when the initial permission is empty, if not throw an error
       if (
-        (typeof initialPermission?.description === 'undefined' ||
-          initialPermission?.description === null) &&
-        (typeof updatePermissionDto?.description === 'undefined' ||
-          updatePermissionDto?.description === null)
+        !initialPermission?.description &&
+        !updatePermissionDto?.description
       ) {
         const error = new CustomException(
           'Invalid input -- need to add a description',
@@ -102,8 +116,12 @@ export class PermissionService {
       return this.findPermissionById(id);
     }
 
-    const error = new CustomException('Invalid input', HttpStatus.NOT_FOUND);
-    this.logger.error(`Invalid input \n data : ${JSON.stringify(error)}`);
+    //a permission with this Id does not exist
+    const error = new CustomException(
+      `A permission with the ID ${id} does not exist.`,
+      HttpStatus.NOT_FOUND,
+    );
+    this.logger.error(`${JSON.stringify(error)}`);
     throw error;
   }
 }
